@@ -6,13 +6,15 @@ function ControlledTabs() {
   const dispatch = useDispatch();
   const age = useSelector((state) => state.age);
 
+  const ageSelectHandler = (selectedAge) => {
+    dispatch({ type: "AGE_FILTER", payload: selectedAge });
+  }
+
   return (
     <Tabs
       id="age-selector"
       activeKey={age}
-      onSelect={(selectedAge) => {
-        dispatch({ type: "AGE_FILTER", payload: selectedAge });
-      }}
+      onSelect={ageSelectHandler}
       className="mb-3"
     >
       <Tab eventKey="All" title="All"></Tab>
