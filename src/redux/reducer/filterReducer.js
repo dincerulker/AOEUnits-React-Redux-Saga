@@ -9,26 +9,25 @@
 
 import data from "../../unitsdata/age-of-empires-units.json";
 
+const initialConditions = { checked: false, value: [0, 200] }
+
 const initialState = {
     units: data.units,
     filterOutput: null,
     age: "All",
-    wood: { checked: false, value: [0, 200] },
-    food: { checked: false, value: [0, 200] },
-    gold: { checked: false, value: [0, 200] },
+    wood: initialConditions,
+    food: initialConditions,
+    gold: initialConditions,
   };
   
-  export default function combinedFilter(state = initialState, action) {
+  const filterReducer = (state = initialState, action) => {
     switch (action.type) {
-      // Age Filter
       case "AGE": {
         return {
           ...state,
           age: action.payload,
         };
       }
-  
-      // Cost Filter
       case "COST": {
         if (action.payload.checked === true || action.payload.checked === false) {
           return {
@@ -61,3 +60,4 @@ const initialState = {
     }
   }
   
+  export default filterReducer;

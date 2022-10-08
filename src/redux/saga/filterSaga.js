@@ -1,20 +1,20 @@
-import { put, all, select, takeLatest } from "redux-saga/effects";
+import { put, all, select, takeLatest, delay } from "redux-saga/effects";
+
+
+/**
+ * Filtering operations according to the selections are defined here.
+ * 
+ */
+
 
 function* filter() {
   const state = yield select();
   let filtered_units = state.units;
 
-  //Cost Filter function that returns null costs if value[0] is 0
-  function filterCost(resourceName) {
+ 
+  const filterCost = (resourceName) => {
     const resource = resourceName.toLowerCase();
     return filtered_units.filter((unit) => {
-      // Checks for null cost and undefined resource cost
-      if (
-        state[resource].value[0] === 0 &&
-        (unit.cost === null || unit.cost[resource] === undefined)
-      ) {
-        return true;
-      } else
         return (
           unit.cost &&
           unit.cost[resourceName] >= state[resource].value[0] &&
@@ -38,14 +38,25 @@ function* filter() {
   yield put({ type: "SET_FILTERED", payload: filtered_units });
 }
 
-//Worker Saga
+/**
+ * Summary
+ * 
+ * Here, before the filtering features from the reducer are transmitted to the store,
+ * yield operations are performed to complete the necessary actions.
+ * 
+ * Delay added after selection to allow time for query to load.
+ * 
+ */
+
 function* ageFilter(action) {
+  yield delay(400);
   yield put({ type: "AGE", payload: action.payload });
   yield put({ type: "FILTER" });
 }
 
 function* costFilter(action) {
   yield put({ type: "COST", payload: action.payload });
+  yield delay(500);
   yield put({ type: "FILTER" });
 }
 

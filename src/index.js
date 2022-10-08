@@ -7,6 +7,8 @@ import { configureAll } from "./redux/store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./layout/Homepage";
 import SelectionArea from "./layout/SelectionArea";
+import UnitDetails from "./layout/UnitDetails";
+import NotFoundPage from "./layout/NotFoundPage";
 import "./styles/main.scss";
 
 const store = configureAll();
@@ -20,6 +22,10 @@ root.render(
           <Route path="/" element={<App />}>
             <Route path="/" element={<Homepage />} />
             <Route path="/units" element={<SelectionArea />} />
+            <Route path="/details">
+              <Route path=":unitId" element={<UnitDetails />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </React.StrictMode>
